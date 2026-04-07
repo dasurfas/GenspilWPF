@@ -41,7 +41,7 @@ namespace GenspilWPF.Repositories
             using (StreamWriter writer = new StreamWriter(_filePath, false)) // false for at overskrive filen
             {
                 foreach (var reservation in items)
-                {1
+                {
                     writer.WriteLine(reservation.ToString());
                 }
             }
