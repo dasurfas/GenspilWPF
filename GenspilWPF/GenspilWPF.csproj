@@ -87,6 +87,8 @@
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ReservationRepository.cs" />
     <Compile Include="Services\GenspilService.cs" />
+    <Compile Include="ViewModels\BoardGameViewModel.cs" />
+    <Compile Include="ViewModels\RelayCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -134,7 +136,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
