@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="GenspilWPF.Views.BoardGameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:model="clr-namespace:GenspilWPF.Models"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GenspilWPF.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Row 1 (soegning) -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 2 (toolbar) -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 3 (main body) -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Soegefelter -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+
+            <!-- Titel felt -->
+            <StackPanel Orientation="Vertical" Margin="8">
+                <TextBlock Text="Titel"/>
+                <TextBox Width="130" Height="20" Text="{Binding SearchTitle}"/>
+            </StackPanel>
+            
+            <!-- Genre -->
+            <StackPanel Orientation="Vertical" Margin="8">
+                <TextBlock Text="Genre"/>
+                <TextBox Width="130" Height="20" Text="{Binding SearchGenre}"/>
+            </StackPanel>
+            
+            <!-- Stand -->
+            <StackPanel Orientation="Vertical" Margin="8">
+                <TextBlock Text="Stand"/>
+                <ComboBox
+                    Width="130"
+                    Height="20"
+                    SelectedItem="{Binding SearchCondition}"
+                    />
+            </StackPanel>
+
+            <!-- Antal Spillere -->
+            <StackPanel Orientation="Vertical" Margin="8">
+                <TextBlock Text="Spillere"/>
+                <TextBox Width="130" Height="20" Text="{Binding SearchMinPlayers}"/>
+            </StackPanel>
+
+            <!-- Pris -->
+            <StackPanel Orientation="Vertical" Margin="8">
+                <TextBlock Text="Maks pris"/>
+                <TextBox Width="130" Height="20" Text="{Binding SearchMaxPrice}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="21,24,0,0">
+                <Button Content="Søg" Width="40" Height="20" Command="{Binding SearchCommand}"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <!-- Toolbar -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Margin="8,5,5,5" Content="+Tilføj spil" Command="{Binding AddBoardGameCommand}"></Button>
+            <Button Grid.Column="2" Margin="5,5,8,5" Content="Udskriv liste" IsEnabled="False"></Button> <!-- TODO -->
+        </Grid>
+        
+        <!-- Data Grid -->
+        <Grid Grid.Row="2">
+            <DataGrid
+                ItemsSource="{Binding BoardGames}"
+                SelectedItem="{Binding SelectedBoardGame}"
+                AutoGenerateColumns="False"
+                >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Titel" Width="130" Binding="{Binding Title}"/>
+                    <DataGridTextColumn Header="Genre" Width="130" Binding="{Binding Genre}"/>
+                    <DataGridTextColumn Header="Stand" Width="100" Binding="{Binding GameCondition}"/>
+                    <DataGridTextColumn Header="Spillere" Width="80" Binding="{Binding MinPlayerCount}"/>
+                    <DataGridTextColumn Header="Pris" Width="80" Binding="{Binding Price}"/>
+                    <DataGridTextColumn Header="Status" Width="130" Binding="{Binding GameStatus}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

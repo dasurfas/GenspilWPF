@@ -1,5 +1,6 @@
 ﻿using GenspilWPF.Models;
 using GenspilWPF.Repositories;
+using System;
 using System.Collections.Generic;
 
 namespace GenspilWPF.Services
@@ -114,6 +115,11 @@ namespace GenspilWPF.Services
 
             }
             _reservationRepo.SaveAll(_reservations);
+        }
+
+        internal void DeleteBoardGame(BoardGame selectedBoardGame)
+        {
+            throw new NotImplementedException();
         }
     }
 }
