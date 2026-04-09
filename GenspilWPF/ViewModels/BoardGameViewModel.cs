@@ -3,8 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using GenspilWPF.Models;
 using System.Windows.Input;
-using System;
-using System.Windows.Controls;
 using GenspilWPF.Views;
 
 namespace GenspilWPF.ViewModels
@@ -43,7 +41,7 @@ namespace GenspilWPF.ViewModels
                 MinPlayers = SearchMinPlayers,
                 MaxPlayers = SearchMaxPlayers,
                 MaxPrice = SearchMaxPrice,
-                Condition = SearchCondition,
+                Condition = SearchCondition is GameCondition gc ? gc : (GameCondition?)null, // Opdater Condition til den valgte oeøgetilstand eller standard til "Alle" (null).
                 Status = SearchStatus
             };
             var results = _service.Search(filter);

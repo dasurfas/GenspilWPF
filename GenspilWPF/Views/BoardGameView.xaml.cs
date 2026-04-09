@@ -16,7 +16,10 @@ namespace GenspilWPF.Views
         {
             InitializeComponent();
 
-            ConditionComboBox.ItemsSource = Enum.GetValues(typeof(GameCondition));
+            var items = new List<object> { "Alle" };
+            items.AddRange(Enum.GetValues(typeof(GameCondition)).Cast<object>());
+            ConditionComboBox.ItemsSource = items;
+            ConditionComboBox.SelectedIndex = 0;
         }
     }
 }
