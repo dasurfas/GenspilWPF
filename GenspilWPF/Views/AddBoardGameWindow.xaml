@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenspilWPF.Views"
         mc:Ignorable="d"
-        Title="AddBoardGameWindow" Height="350" Width="450">
+        Title="AddBoardGameWindow" Height="360" Width="440">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30*"/>
@@ -53,7 +54,7 @@
             <TextBox Width="408" HorizontalAlignment="Left" Height="50" x:Name="NotesTextBox" AcceptsReturn="True" TextWrapping="Wrap"/>
         </StackPanel>
         <!-- Buttons -->
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,8,8,8" Width="168">
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,8,8" Width="168">
             <Button Content="Annuller" Width="80" x:Name="CancelButton" Height="20" Margin="0,0,8,0" Click="CancelButton_Click"/>
             <Button Content="Tilføj spil" x:Name="AddButton" Width="80" Height="20" Click="AddButton_Click"/>
         </StackPanel>

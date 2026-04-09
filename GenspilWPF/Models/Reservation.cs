@@ -11,22 +11,26 @@ namespace GenspilWPF.Models
         public DateTime Date { get; private set; }
         public ReservationStatus Status { get; private set; }
 
-        public Reservation(string gameTitle, string customerName, string contactInfo, ReservationStatus status)
+        public string Notes { get; private set; }
+
+        public Reservation(string gameTitle, string customerName, string contactInfo, ReservationStatus status, string notes)
         {
             GameTitle = gameTitle;
             CustomerName = customerName;
             ContactInfo = contactInfo;
             Date = DateTime.Today;
+            Notes = notes;
             Status = status;
 
             Validate();
         }
-        public Reservation(string gameTitle, string customerName, string contactInfo, DateTime date, ReservationStatus status)
+        public Reservation(string gameTitle, string customerName, string contactInfo, DateTime date, ReservationStatus status, string notes)
         {
             GameTitle = gameTitle;
             CustomerName = customerName;
             ContactInfo = contactInfo;
             Date = date;
+            Notes = notes;
             Status = status;
 
             Validate();
@@ -48,7 +52,7 @@ namespace GenspilWPF.Models
         }
         public override string ToString()
         {
-            return $"{GameTitle};{CustomerName};{ContactInfo};{Date};{Status}";
+            return $"{GameTitle};{CustomerName};{ContactInfo};{Date};{Status};{Notes}";
         }
 
         public static Reservation FromString(string data)
@@ -60,9 +64,9 @@ namespace GenspilWPF.Models
                 parts[1], // customerName
                 parts[2], // contactInfo
                 DateTime.Parse(parts[3]), // date
-                (ReservationStatus)Enum.Parse(typeof(ReservationStatus), parts[4]) // status
+                (ReservationStatus)Enum.Parse(typeof(ReservationStatus), parts[4]), // status
+                parts[5] // notes
             );
         }
-
     }
 }

@@ -35,6 +35,7 @@
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Stand"/>
                 <ComboBox
+                    x:Name="ConditionComboBox"
                     Width="130"
                     Height="20"
                     SelectedItem="{Binding SearchCondition}"
@@ -53,7 +54,7 @@
                 <TextBox Width="130" Height="20" Text="{Binding SearchMaxPrice}"/>
             </StackPanel>
 
-            <StackPanel Orientation="Vertical" Margin="21,24,0,0">
+            <StackPanel Orientation="Vertical" Margin="15,24,0,0">
                 <Button Content="Søg" Width="40" Height="20" Command="{Binding SearchCommand}"/>
             </StackPanel>
         </StackPanel>
@@ -66,7 +67,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Margin="8,5,5,5" Content="+Tilføj spil" Command="{Binding AddBoardGameCommand}"></Button>
-            <Button Grid.Column="2" Margin="5,5,8,5" Content="Udskriv liste" IsEnabled="False"></Button> <!-- TODO -->
+            <Button Grid.Column="2" Margin="5,5,15,5" Content="Udskriv liste" IsEnabled="False"></Button> <!-- TODO -->
         </Grid>
         
         <!-- Data Grid -->
@@ -80,9 +81,16 @@
                     <DataGridTextColumn Header="Titel" Width="130" Binding="{Binding Title}"/>
                     <DataGridTextColumn Header="Genre" Width="130" Binding="{Binding Genre}"/>
                     <DataGridTextColumn Header="Stand" Width="100" Binding="{Binding GameCondition}"/>
-                    <DataGridTextColumn Header="Spillere" Width="80" Binding="{Binding MinPlayerCount}"/>
+                    <DataGridTextColumn Header="Spillere" Width="80" Binding="{Binding PlayerRange}"/>
                     <DataGridTextColumn Header="Pris" Width="80" Binding="{Binding Price}"/>
                     <DataGridTextColumn Header="Status" Width="130" Binding="{Binding GameStatus}"/>
+                    <DataGridTemplateColumn Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Rediger" Command="{Binding DataContext.EditBoardGameCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

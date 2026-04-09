@@ -37,6 +37,13 @@
                     <DataGridTextColumn Header="Kontakt" Width="120" Binding="{Binding ContactInfo}"/>
                     <DataGridTextColumn Header="Dato" Width="120" Binding="{Binding Date}"/>
                     <DataGridTextColumn Header="Status" Width="120" Binding="{Binding Status}"/>
+                    <DataGridTemplateColumn Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Rediger" Command="{Binding DataContext.EditReservationCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

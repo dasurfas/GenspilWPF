@@ -2,7 +2,7 @@
 {
         internal enum GameStatus
         {
-            PaaLager,
-            IkkePaaLager
+            På_Lager,
+            Ikke_På_Lager
         }
 }

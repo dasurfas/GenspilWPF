@@ -1,4 +1,5 @@
 ﻿using GenspilWPF.Models;
+using GenspilWPF.Views;
 using GenspilWPF.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,9 +12,6 @@ namespace GenspilWPF.ViewModels
         private ObservableCollection<Reservation> _reservations;
         private readonly GenspilService _service;
         private Reservation _selectedReservation;
-        private string _newGameTitle;
-        private string _newCustomerName;
-        private string _newContactInfo;
 
         public ReservationViewModel(GenspilService service)
         {
@@ -25,10 +23,13 @@ namespace GenspilWPF.ViewModels
 
         private void AddReservation()
         {
-            var newReservation = new Reservation(NewGameTitle, NewCustomerName, NewContactInfo, ReservationStatus.Aktiv);
-            _service.AddReservation(newReservation);
-            Reservations.Add(newReservation);
-            ClearNewReservationFields();
+            var window = new AddReservationWindow();
+            window.ShowDialog();
+            if (window.NewReservation != null)
+            {
+                _service.AddReservation(window.NewReservation);
+                Reservations.Add(window.NewReservation);
+            }
         }
 
         private void RemoveReservation()
@@ -39,13 +40,6 @@ namespace GenspilWPF.ViewModels
                 Reservations.Remove(SelectedReservation);
                 SelectedReservation = null;
             }
-        }
-
-        private void ClearNewReservationFields()
-        {
-            NewGameTitle = string.Empty;
-            NewCustomerName = string.Empty;
-            NewContactInfo = string.Empty;
         }
         public ObservableCollection<Reservation> Reservations
             {
@@ -63,36 +57,6 @@ namespace GenspilWPF.ViewModels
             {
                 _selectedReservation = value;
                 OnPropertyChanged(nameof(SelectedReservation));
-            }
-        }
-
-        public string NewGameTitle
-        { 
-            get { return _newGameTitle; }
-            set
-            {
-                _newGameTitle = value;
-                OnPropertyChanged(nameof(NewGameTitle));
-            }
-        }
-
-        public string NewCustomerName
-        {
-            get { return _newCustomerName; }
-            set
-            {
-                _newCustomerName = value;
-                OnPropertyChanged(nameof(NewCustomerName));
-            }
-        }
-
-        public string NewContactInfo
-        {
-            get { return _newContactInfo; }
-            set
-            {
-                _newContactInfo = value;
-                OnPropertyChanged(nameof(NewContactInfo));
             }
         }
         public ICommand AddReservationCommand { get; }

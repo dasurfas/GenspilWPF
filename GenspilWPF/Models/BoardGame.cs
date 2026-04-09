@@ -11,6 +11,14 @@ namespace GenspilWPF.Models
         public string Genre { get; private set; }
         public int MinPlayerCount { get; private set; }
         public int MaxPlayerCount { get; private set; }
+        public string PlayerRange
+        {
+            get
+            {
+                if (MinPlayerCount == MaxPlayerCount) return $"{MinPlayerCount}";
+                else return $"{MinPlayerCount}-{MaxPlayerCount}";
+            }
+        }
         public decimal Price { get; private set; }
         public string Notes { get; private set; }
         public GameCondition GameCondition { get; private set; }
@@ -54,7 +62,6 @@ namespace GenspilWPF.Models
         {
             if (string.IsNullOrWhiteSpace(Title))
                 throw new ArgumentException("Titel maa ikke vaere tom!");
-
             if (string.IsNullOrWhiteSpace(Genre))
                 throw new ArgumentException("Genre maa ikke vaere tom!");
             if (MinPlayerCount < 1)
@@ -104,7 +111,8 @@ namespace GenspilWPF.Models
                 parts[2], // Genre
                 int.Parse(parts[3]), // MinPlayerCount
                 int.Parse(parts[4]), // MaxPlayerCount
-                decimal.Parse(parts[5]), // Pris
+                // Pris - brug InvariantCulture for at sikre korrekt decimalformat uanset systemindstillinger
+                decimal.Parse(parts[5]),
                 (GameCondition)Enum.Parse(typeof(GameCondition), parts[6]), // GameCondition
                 (GameStatus)Enum.Parse(typeof(GameStatus), parts[7]), // GameStatus
                 parts[8] // Notes

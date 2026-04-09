@@ -31,7 +31,7 @@ namespace GenspilWPF.Views
             int minPlayers = int.Parse(parts[0]);
             int maxPlayers = parts.Length > 1 ? int.Parse(parts[1]) : minPlayers;
             GameCondition gameCondition = (GameCondition)ConditionComboBox.SelectedItem;
-            GameStatus gameStatus = GameStatus.PaaLager;
+            GameStatus gameStatus = GameStatus.På_Lager;
             decimal price = decimal.TryParse(PriceTextBox.Text, out decimal p) ? p : 0;
             string notes = NotesTextBox.Text;
 

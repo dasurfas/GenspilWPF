@@ -94,6 +94,9 @@
     <Compile Include="Views\AddBoardGameWindow.xaml.cs">
       <DependentUpon>AddBoardGameWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AddReservationWindow.xaml.cs">
+      <DependentUpon>AddReservationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BoardGameView.xaml.cs">
       <DependentUpon>BoardGameView.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\AddBoardGameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddReservationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
