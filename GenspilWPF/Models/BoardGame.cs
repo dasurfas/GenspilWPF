@@ -11,6 +11,7 @@ namespace GenspilWPF.Models
         public string Genre { get; private set; }
         public int MinPlayerCount { get; private set; }
         public int MaxPlayerCount { get; private set; }
+        // PlayerRange er en string der goer at man ikke skal indtaste baade min og max players naar man opretter et spil:
         public string PlayerRange
         {
             get
@@ -101,6 +102,7 @@ namespace GenspilWPF.Models
             return $"{Id};{Title};{Genre};{MinPlayerCount};{MaxPlayerCount};{Price};{GameCondition};{GameStatus};{Notes}";
         }
 
+        // FromString() metoden der splitter vores string up i parts og samler dem i et array:
         public static BoardGame FromString(string data)
         {
             string[] parts = data.Split(';');

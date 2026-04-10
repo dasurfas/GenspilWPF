@@ -9,6 +9,7 @@ namespace GenspilWPF.ViewModels
 {
     internal class BoardGameViewModel : INotifyPropertyChanged
     {
+        // privat felt med reference til GenspilService (som har alt forretningslogik).
         private readonly GenspilService _service;
 
         // ObservableCollection er en samling, der automatisk opdaterer UI'et, når elementer tilfoejes eller fjernes.
@@ -23,7 +24,7 @@ namespace GenspilWPF.ViewModels
         private GameStatus? _searchStatus;
         private BoardGame _selectedBoardGame;
 
-        // Constructor: Initialiserer kommandoerne og indlaeser alle braetspil ved oprettelse af ViewModel.
+        // Constructor: Initialiserer service og indlaeser alle braetspil fra fil og kobler kommandoer til deres metoder i RelayCommand.
         public BoardGameViewModel(GenspilService service)
         {
             _service = service;
@@ -31,7 +32,11 @@ namespace GenspilWPF.ViewModels
             SearchCommand = new RelayCommand(Search);
             AddBoardGameCommand = new RelayCommand(AddBoardGame);
             DeleteBoardGameCommand = new RelayCommand(DeleteBoardGame);
+            EditBoardGameCommand = new RelayCommand(UpdateBoardGame);
         }
+        // Soeger efter spil baseret paa udfyldte soegefelter.
+        // Opretter et SearchFilter objekt og sender det til GenspilService
+        // Resultatet opdaterer BoardGames listen som DataGrid binder til.
         private void Search()
         {
             var filter = new SearchFilter
@@ -41,33 +46,61 @@ namespace GenspilWPF.ViewModels
                 MinPlayers = SearchMinPlayers,
                 MaxPlayers = SearchMaxPlayers,
                 MaxPrice = SearchMaxPrice,
-                Condition = SearchCondition is GameCondition gc ? gc : (GameCondition?)null, // Opdater Condition til den valgte oeøgetilstand eller standard til "Alle" (null).
+                // Opdater Condition til den valgte soegetilstand eller standard til "Alle" (null). TODO: Faa det til at virke.
+                Condition = SearchCondition is GameCondition gc ? gc : (GameCondition?)null,
                 Status = SearchStatus
             };
             var results = _service.Search(filter);
             BoardGames = new ObservableCollection<BoardGame>(results);
+
+            // TODO: ClearInput() efter soegning.
         }
 
+        // Aabner "Tilfoej spil" vinduet som modal (popup).
+        // Hvis brugeren gemmer saa tilfoejes spillet til service (fil) og BoardGames listen (UI).
         private void AddBoardGame()
         {
             AddBoardGameWindow addBoardGameWindow = new AddBoardGameWindow();
+            // Modal:
             addBoardGameWindow.ShowDialog();
             if (addBoardGameWindow.NewBoardGame != null)
             {
-                _service.AddBoardGame(addBoardGameWindow.NewBoardGame);
-                BoardGames.Add(addBoardGameWindow.NewBoardGame);
+                _service.AddBoardGame(addBoardGameWindow.NewBoardGame); // Gem til fil.
+                BoardGames.Add(addBoardGameWindow.NewBoardGame); // Opdater UI.
             }
         }
 
+        // Sletter det valgte spil fra fil (service) og BoardGames listen (UI):
+        // Returnerer tidligt hvis intet spil er valgt.
         private void DeleteBoardGame()
         {
             if (_selectedBoardGame == null) return; // Intet spil valgt, intet at slette
             {
-                _service.RemoveBoardGame( _selectedBoardGame ); // Slet spillet.
-                BoardGames.Remove( _selectedBoardGame ); // Opdater UI'et.
+                _service.RemoveBoardGame(_selectedBoardGame); // Slet fra fil.
+                BoardGames.Remove(_selectedBoardGame); // Opdater UI'et.
             }
         }
 
+        // Aabner redigerings vinduet med det valgte spils data udfyldt.
+        // Hvis brugeren gemmer, saa opdateres spillet i service (fil) og paa den korrekte position i BoardGames (UI).
+        // TODO: Aendre knap-teksten "Tilfoej spil" til "Opdater" i dette vindue.
+        private void UpdateBoardGame()
+        {
+            if (_selectedBoardGame == null) return;
+
+            var window = new AddBoardGameWindow(_selectedBoardGame);
+            window.ShowDialog();
+
+            if (window.NewBoardGame != null)
+            {
+                _service.UpdateBoardGame(window.NewBoardGame);
+                int index = BoardGames.IndexOf(_selectedBoardGame);
+                BoardGames[index] = window.NewBoardGame;
+            }
+        }
+
+        // Boardgames er listen DataGrid (xaml) binder (binding) til.
+        // OnProptertyChanged sikrer at UI opdateres naar listen udskiftes (f.eks. efter soegning).
         public ObservableCollection<BoardGame> BoardGames
         {
             get { return _boardGames; }
@@ -165,8 +198,12 @@ namespace GenspilWPF.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        // Commands til at udfoere Click. ICommand kommer System.Windows.Input og bruges til at binde (binding)
+        // knapper til metoder.
+        // INotifyPropertyChanged bruges til at opdatere UI naar Properties aendrer sig.
         public ICommand SearchCommand { get; }
         public ICommand AddBoardGameCommand { get; }
         public ICommand DeleteBoardGameCommand { get; }
+        public ICommand EditBoardGameCommand { get; }
     }
 }

@@ -16,6 +16,7 @@ namespace GenspilWPF.Views
         {
             InitializeComponent();
 
+            // Virker ikke helt: TODO: Skal autovaelge Alle og alle skal vise alle spil uanset stand / condition.
             var items = new List<object> { "Alle" };
             items.AddRange(Enum.GetValues(typeof(GameCondition)).Cast<object>());
             ConditionComboBox.ItemsSource = items;

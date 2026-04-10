@@ -5,15 +5,19 @@ using System.Collections.Generic;
 
 namespace GenspilWPF.Services
 {
+
+    // Datahandler klassen som sidder imellem repositories og view models og haandterer forretningslogikken.
     internal class GenspilService
     {
-        // readonly saa vi ikke kan aendre variabler efter de er blevet sat i contructoren.
+        // readonly saa vi ikke kan aendre variabler efter de er blevet sat i contructoren:
         private readonly IRepository<BoardGame> _gameRepo;
         private readonly IRepository<Reservation> _reservationRepo;
 
+        // Lister der holder data i RAM mens programmet koerer.
         private readonly List<BoardGame> _games;
         private readonly List<Reservation> _reservations;
 
+        // Constructor: Indlaeser spil og reservationer fra fil ved opstart (LoadAll()):
         public GenspilService(IRepository<BoardGame> gameRepo, IRepository<Reservation> reservationRepo)
         {
             _gameRepo = gameRepo;
@@ -23,23 +27,28 @@ namespace GenspilWPF.Services
             _reservations = _reservationRepo.LoadAll();
         }
 
+        // Tilfoejer nyt spil  til listen og gemmer den i filen:
         public void AddBoardGame(BoardGame game)
         {
             _games.Add(game);
             _gameRepo.SaveAll(_games);
         }
 
+        // Fjerner spil fra listen og gemmer listen igen (uden det fjernede spil):
         public void RemoveBoardGame(BoardGame game)
         {
             _games.Remove(game);
             _gameRepo.SaveAll(_games);
         }
 
+        // Returnerer all spil fra RAM:
         public List<BoardGame> GetAllBoardGames()
         {
             return _games;
         }
 
+        // Finder spillet med det samme Id (== game.Id), og erstatter det eksisterende spil.
+        // Gemmer derefter hele listen til fil.
         public void UpdateBoardGame(BoardGame game)
         {
             for (int i = 0; i < _games.Count; i++)
@@ -53,6 +62,23 @@ namespace GenspilWPF.Services
             _gameRepo.SaveAll(_games);
         }
 
+        // Finder reservationer med samme Id, og erstatter den eksisterende reservation.
+        // Gemmer til fil.
+        public void UpdateReservation(Reservation reservation)
+        {
+            for (int i = 0; i < _reservations.Count; i++)
+            {
+                if (_reservations[i].Id == reservation.Id)
+                {
+                    _reservations[i] = reservation;
+                    break;
+                }
+            }
+            _reservationRepo.SaveAll(_reservations);
+        }
+
+        // Soeger efter spil baseret paa SearchFilter. Kun matchende spil der udfylder ALLE kriterier returneres.
+        // TODO: Ikke den bedste metode og mangler en "reset after search funktion". Think think...
         public List<BoardGame> Search(SearchFilter filter)
         {
             List<BoardGame> results = new List<BoardGame>();
@@ -82,32 +108,33 @@ namespace GenspilWPF.Services
             return results;
         }
 
-        // reservation = r i klassediagram.
-        // reservationStatus = r i klassediagram.
-        // Hvis jeg skal opdatere status på en reservation, så skal jeg finde den i listen og opdatere den. Det er det jeg goer i UpdateReservationStatus metoden. Jeg sammenligner game title og customer name for at finde den rigtige reservation, og så opdaterer jeg status på den. Efter det gemmer jeg alle reservationerne igen for at sikre at aendringen bliver gemt.
+        // Tilfoejer ny reservation og gemmer til fil.
         public void AddReservation(Reservation reservation)
         {
             _reservations.Add(reservation);
             _reservationRepo.SaveAll(_reservations);
         }
 
+        // Fjerner reservation fra listen og gemmer den nye liste til fil.
         public void RemoveReservation(Reservation reservation)
         {
             _reservations.Remove(reservation);
             _reservationRepo.SaveAll(_reservations);
         }
 
+        // Returnerer alle reservationer fra hukommelse (RAM).
         public List<Reservation> GetAllReservations()
         {
             return _reservations;
         }
 
+        // Finder reservation med samme Id (== reservation.Id), og opdaterer dens status.
+        // Gemmer derefter listen til fil.
         public void UpdateReservationStatus(Reservation reservation, ReservationStatus newStatus)
         {
             for (int i = 0; i < _reservations.Count; i++)
             {
-                if (_reservations[i].GameTitle == reservation.GameTitle &&
-                    _reservations[i].CustomerName == reservation.CustomerName)
+                if (_reservations[i].Id == reservation.Id)
                 {
                     _reservations[i].UpdateStatus(newStatus);
                     break;
@@ -115,11 +142,6 @@ namespace GenspilWPF.Services
 
             }
             _reservationRepo.SaveAll(_reservations);
-        }
-
-        internal void DeleteBoardGame(BoardGame selectedBoardGame)
-        {
-            throw new NotImplementedException();
         }
     }
 }

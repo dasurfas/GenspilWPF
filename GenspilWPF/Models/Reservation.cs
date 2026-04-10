@@ -10,9 +10,10 @@ namespace GenspilWPF.Models
         public string ContactInfo { get; private set; }
         public DateTime Date { get; private set; }
         public ReservationStatus Status { get; private set; }
-
         public string Notes { get; private set; }
+        public int Id { get; private set; }
 
+        // Constructor 1:
         public Reservation(string gameTitle, string customerName, string contactInfo, ReservationStatus status, string notes)
         {
             GameTitle = gameTitle;
@@ -22,9 +23,13 @@ namespace GenspilWPF.Models
             Notes = notes;
             Status = status;
 
+            Id = Math.Abs(Guid.NewGuid().GetHashCode());
+
             Validate();
         }
-        public Reservation(string gameTitle, string customerName, string contactInfo, DateTime date, ReservationStatus status, string notes)
+
+        // Constructor 2:
+        public Reservation(int id, string gameTitle, string customerName, string contactInfo, DateTime date, ReservationStatus status, string notes)
         {
             GameTitle = gameTitle;
             CustomerName = customerName;
@@ -32,6 +37,7 @@ namespace GenspilWPF.Models
             Date = date;
             Notes = notes;
             Status = status;
+            Id = id;
 
             Validate();
         }
@@ -52,7 +58,7 @@ namespace GenspilWPF.Models
         }
         public override string ToString()
         {
-            return $"{GameTitle};{CustomerName};{ContactInfo};{Date};{Status};{Notes}";
+            return $"{Id};{GameTitle};{CustomerName};{ContactInfo};{Date};{Status};{Notes}";
         }
 
         public static Reservation FromString(string data)
@@ -60,12 +66,13 @@ namespace GenspilWPF.Models
             string [] parts = data.Split(';');
 
             return new Reservation(
-                parts[0], // gameTitle
-                parts[1], // customerName
-                parts[2], // contactInfo
-                DateTime.Parse(parts[3]), // date
-                (ReservationStatus)Enum.Parse(typeof(ReservationStatus), parts[4]), // status
-                parts[5] // notes
+                int.Parse(parts[0]), // Id fra int til string (Parse()).
+                parts[1], // gameTitle
+                parts[2], // customerName
+                parts[3], // contactInfo
+                DateTime.Parse(parts[4]), // date
+                (ReservationStatus)Enum.Parse(typeof(ReservationStatus), parts[5]), // status
+                parts[6] // notes
             );
         }
     }

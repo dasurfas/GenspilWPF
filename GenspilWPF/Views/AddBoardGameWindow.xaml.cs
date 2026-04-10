@@ -6,16 +6,29 @@ using System.Windows;
 
 namespace GenspilWPF.Views
 {
-    /// <summary>
-    /// Interaction logic for AddBoardGameWindow.xaml
-    /// </summary>
     public partial class AddBoardGameWindow : Window
     {
-        public AddBoardGameWindow()
+        private BoardGame _existingGame;
+        // Tilfoejer input til constructoren saa vi kan tilfoeje (null hvis der ikke er et existing game)
+        // og redigere (existing game set fra BoardGameViewModel):
+        // Constructoren er internal fordi BoardGame klassen er internal. Begge skal have samme access modifiers.
+        internal AddBoardGameWindow(BoardGame existingGame = null)
         {
             InitializeComponent();
 
+            _existingGame = existingGame;
             ConditionComboBox.ItemsSource = Enum.GetValues(typeof(GameCondition));
+
+            // Hvis et existing game eksisterer:
+            if (existingGame != null)
+            {
+                TitleTextBox.Text = existingGame.Title;
+                GenreTextBox.Text = existingGame.Genre;
+                PlayersTextBox.Text = existingGame.PlayerRange;
+                ConditionComboBox.Text = existingGame.GameCondition.ToString();
+                PriceTextBox.Text = existingGame.Price.ToString();
+                NotesTextBox.Text = existingGame.Notes;
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -25,6 +38,7 @@ namespace GenspilWPF.Views
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+
             string title = TitleTextBox.Text;
             string genre = GenreTextBox.Text;
             string [] parts = PlayersTextBox.Text.Split('-');
@@ -36,7 +50,17 @@ namespace GenspilWPF.Views
             string notes = NotesTextBox.Text;
 
             // Opret et nyt BoardGame-objekt med de indtastede oplysninger
-            NewBoardGame = new BoardGame(title, genre, minPlayers, maxPlayers, price, gameCondition, gameStatus, notes);
+            // Bestemmer hvilken constructor (BoardGame.cs) vi skal bruge:
+            if (_existingGame != null)
+            {
+                // Redigering - Bevar det originale ID:
+                NewBoardGame = new BoardGame(_existingGame.Id, title, genre, minPlayers, maxPlayers, price, gameCondition, gameStatus, notes);
+            }
+            else
+            {
+                // Nyt spil - Opret nyt ID:
+                NewBoardGame = new BoardGame(title, genre, minPlayers, maxPlayers, price, gameCondition, gameStatus, notes);
+            }
 
             this.Close();
 
