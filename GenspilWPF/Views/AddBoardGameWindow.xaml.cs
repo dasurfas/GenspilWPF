@@ -28,6 +28,8 @@ namespace GenspilWPF.Views
                 ConditionComboBox.Text = existingGame.GameCondition.ToString();
                 PriceTextBox.Text = existingGame.Price.ToString();
                 NotesTextBox.Text = existingGame.Notes;
+
+                AddButton.Content = "Gem ændringer"; // Aendrer teksten fra "tilfoej spil" naar man redigerer.
             }
         }
 

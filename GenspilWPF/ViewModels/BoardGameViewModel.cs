@@ -4,6 +4,7 @@ using System.ComponentModel;
 using GenspilWPF.Models;
 using System.Windows.Input;
 using GenspilWPF.Views;
+using System.Windows;
 
 namespace GenspilWPF.ViewModels
 {
@@ -34,8 +35,7 @@ namespace GenspilWPF.ViewModels
             DeleteBoardGameCommand = new RelayCommand(DeleteBoardGame);
             EditBoardGameCommand = new RelayCommand(UpdateBoardGame);
         }
-        // Soeger efter spil baseret paa udfyldte soegefelter.
-        // Opretter et SearchFilter objekt og sender det til GenspilService
+        // Soeger efter spil baseret paa udfyldte soegefelter og pretter et SearchFilter objekt og sender det til GenspilService
         // Resultatet opdaterer BoardGames listen som DataGrid binder til.
         private void Search()
         {
@@ -74,10 +74,20 @@ namespace GenspilWPF.ViewModels
         // Returnerer tidligt hvis intet spil er valgt.
         private void DeleteBoardGame()
         {
-            if (_selectedBoardGame == null) return; // Intet spil valgt, intet at slette
+            if (_selectedBoardGame == null) return;                     // Intet spil valgt, intet at slette.
             {
-                _service.RemoveBoardGame(_selectedBoardGame); // Slet fra fil.
-                BoardGames.Remove(_selectedBoardGame); // Opdater UI'et.
+                var result = MessageBox.Show
+                    ("Er du sikker på at du vil slette dette spil?",    // Tekst i dialogen.
+                    "Bekræft sletning",                                 // Titlen i boksen.
+                    MessageBoxButton.YesNo,                             // Hvilke knapper der skal vises - Yes og No.
+                    MessageBoxImage.Warning);                           // Ikonet i boksen. Warning er gul trekant.
+
+                if (result == MessageBoxResult.Yes)                     // Hvis brugeren trykker "ja".
+                {
+                    _service.RemoveBoardGame(_selectedBoardGame);       // Slet fra fil.
+                    BoardGames.Remove(_selectedBoardGame);              // Opdater UI'et.
+                    SelectedBoardGame = null;                           // Nulstiller SelectedBoardGame saa variablen er null (intet er selected).
+                }
             }
         }
 

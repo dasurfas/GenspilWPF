@@ -28,6 +28,8 @@ namespace GenspilWPF.Views
                 CustomerTextBox.Text = existingReservation.CustomerName;
                 ContactInfoTextBox.Text = existingReservation.ContactInfo;
                 NotesTextBox.Text = existingReservation.Notes;
+
+                AddButton.Content = "Gem ændringer"; // Samme som rediger BoardGame. Aendrer teksten i knappen naar man redigerer.
             }
 
         }

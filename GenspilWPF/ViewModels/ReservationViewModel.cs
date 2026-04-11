@@ -1,10 +1,11 @@
 ﻿using GenspilWPF.Models;
-using GenspilWPF.Views;
 using GenspilWPF.Services;
+using GenspilWPF.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
 using System.Net.Http.Headers;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GenspilWPF.ViewModels
 {
@@ -36,11 +37,21 @@ namespace GenspilWPF.ViewModels
 
         private void RemoveReservation()
         {
-            if (SelectedReservation != null)
+            if (SelectedReservation == null) return;                    // Intet spil valgt, intet at slette.
+
+            var result = MessageBox.Show
+                (
+                "Er du sikker på at du vil slette denne reservation?",  // Tekst i dialogen.
+                "Bekræft sletning",                                     // Titlen i boksen.
+                MessageBoxButton.YesNo,                                 // Hvilke knapper der skal vises - Yes og No.
+                MessageBoxImage.Warning                                 // Ikonet i boksen. Warning er gul trekant.
+                );
+
+            if (result == MessageBoxResult.Yes)                         // Hvis brugeren trykker "ja".
             {
-                _service.RemoveReservation(SelectedReservation);
-                Reservations.Remove(SelectedReservation);
-                SelectedReservation = null;
+                _service.RemoveReservation(SelectedReservation);        // Slet fra fil.
+                Reservations.Remove(SelectedReservation);               // Opdater UI'et.
+                SelectedReservation = null;                             // Nulstil selectedReservation (null).
             }
         }
 

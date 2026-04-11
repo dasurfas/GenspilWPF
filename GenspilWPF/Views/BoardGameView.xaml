@@ -22,13 +22,14 @@
             <!-- Titel felt -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Titel"/>
-                <TextBox Width="130" Height="20" Text="{Binding SearchTitle}"/>
+                <TextBox Width="130" Height="20" Text="{Binding SearchTitle}" Tag="Søg titel...">
+                </TextBox>
             </StackPanel>
             
             <!-- Genre -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Genre"/>
-                <TextBox Width="130" Height="20" Text="{Binding SearchGenre}"/>
+                <TextBox Width="130" Height="20" Text="{Binding SearchGenre}" Tag="Fx Strategi..."/>
             </StackPanel>
             
             <!-- Stand -->
@@ -45,13 +46,13 @@
             <!-- Antal Spillere -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Spillere"/>
-                <TextBox Width="130" Height="20" Text="{Binding SearchMinPlayers}"/>
+                <TextBox Width="130" Height="20" Text="{Binding SearchMinPlayers}" Tag="Fx 2 eller 3-4..."/>
             </StackPanel>
 
             <!-- Pris -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Maks pris"/>
-                <TextBox Width="130" Height="20" Text="{Binding SearchMaxPrice}"/>
+                <TextBox Width="130" Height="20" Text="{Binding SearchMaxPrice}" Tag="Kr..."/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="15,24,0,0">
@@ -87,7 +88,10 @@
                     <DataGridTemplateColumn Header="">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Rediger" Command="{Binding DataContext.EditBoardGameCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Content="Rediger" Margin="5,0" Command="{Binding DataContext.EditBoardGameCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                    <Button Content="Slet" Margin="5,0" Command="{Binding DataContext.DeleteBoardGameCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
