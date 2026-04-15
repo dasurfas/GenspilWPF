@@ -1,12 +1,12 @@
 ﻿namespace GenspilWPF.Models
 {
-        internal enum GameCondition
-        {
-            Ny,
-            God,
-            Okay,
-            Slidt,
-            Beskadiget,
-            Oedelagt
-        }
+    internal enum GameCondition
+    {
+        Ny,
+        God,
+        Okay,
+        Slidt,
+        Beskadiget,
+        Oedelagt
+    }
 }

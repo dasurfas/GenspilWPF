@@ -58,21 +58,24 @@ namespace GenspilWPF.Models
             Validate();
         }
 
-        // Validering af inputdata:
+        // Vi ved hvad der kan gaa galt, saa der er ingen grund til try-catch blokke her.
+        // Her sendes ArgumentExceptions, som fanges i UI'et (AddBoardGameWindow) og vises i en MessageBox for brugeren. SoC.
         private void Validate()
         {
             if (string.IsNullOrWhiteSpace(Title))
-                throw new ArgumentException("Titel maa ikke vaere tom!");
+                throw new ArgumentException("Titel maa ikke være tom!");
             if (string.IsNullOrWhiteSpace(Genre))
-                throw new ArgumentException("Genre maa ikke vaere tom!");
+                throw new ArgumentException("Genre maa ikke være tom!");
             if (MinPlayerCount < 1)
-                throw new ArgumentException("Minimum antal spillere skal vaere mindst 1!");
+                throw new ArgumentException("Minimum antal spillere skal være mindst 1!");
             if (MaxPlayerCount < 1)
-                throw new ArgumentException("Maximum antal spillere skal vaere mindst 1!");
+                throw new ArgumentException("Maximum antal spillere skal være mindst 1!");
             if (Price < 0)
-                throw new ArgumentException("Prisen maa ikke vaere negativ!");
+                throw new ArgumentException("Prisen maa ikke være negativ!");
             if (MinPlayerCount > MaxPlayerCount)
-                throw new ArgumentException("Minimum antal spillere kan ikke vaere stoerre end maximum antal spillere!");
+                throw new ArgumentException("Minimum antal spillere kan ikke være større end maximum antal spillere!");
+            if (MaxPlayerCount < MinPlayerCount)
+                throw new ArgumentException("Maximum antal spillere kan ikke være mindre end minimum antal spillere!");
         }
 
         // Metode til at saette pris og validere:
@@ -82,21 +85,22 @@ namespace GenspilWPF.Models
                 throw new ArgumentException("Prisen maa ikke vaere negativ!");
             Price = newPrice;
         }
+        // Metode til at saette player count og validere:
         public void UpdateCondition(GameCondition newCondition)
         {
             GameCondition = newCondition;
         }
-
+        // Metode til at saette status og validere:
         public void UpdateStatus(GameStatus newStatus)
         {
             GameStatus = newStatus;
         }
-
+        // Metode til at saette notes og validere:
         public void UpdateNotes(string newNotes)
         {
             Notes = newNotes;
         }
-
+        // ToString() metoden der konverterer et BoardGame objekt til en string, som kan gemmes i en fil. Felterne adskilles af semikolon (;).
         public override string ToString()
         {
             return $"{Id};{Title};{Genre};{MinPlayerCount};{MaxPlayerCount};{Price};{GameCondition};{GameStatus};{Notes}";

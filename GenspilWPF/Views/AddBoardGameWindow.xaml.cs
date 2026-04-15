@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace GenspilWPF.Views
 {
@@ -40,32 +41,60 @@ namespace GenspilWPF.Views
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-
-            string title = TitleTextBox.Text;
-            string genre = GenreTextBox.Text;
-            string [] parts = PlayersTextBox.Text.Split('-');
-            int minPlayers = int.Parse(parts[0]);
-            int maxPlayers = parts.Length > 1 ? int.Parse(parts[1]) : minPlayers;
-            GameCondition gameCondition = (GameCondition)ConditionComboBox.SelectedItem;
-            GameStatus gameStatus = GameStatus.På_Lager;
-            decimal price = decimal.TryParse(PriceTextBox.Text, out decimal p) ? p : 0;
-            string notes = NotesTextBox.Text;
-
-            // Opret et nyt BoardGame-objekt med de indtastede oplysninger
-            // Bestemmer hvilken constructor (BoardGame.cs) vi skal bruge:
-            if (_existingGame != null)
+            try
             {
-                // Redigering - Bevar det originale ID:
-                NewBoardGame = new BoardGame(_existingGame.Id, title, genre, minPlayers, maxPlayers, price, gameCondition, gameStatus, notes);
+                string title = TitleTextBox.Text;
+                string genre = GenreTextBox.Text;
+                string[] parts = PlayersTextBox.Text.Split('-');
+                int minPlayers = int.Parse(parts[0]);
+                int maxPlayers = parts.Length > 1 ? int.Parse(parts[1]) : minPlayers;
+                GameCondition gameCondition = (GameCondition)ConditionComboBox.SelectedItem;
+                GameStatus gameStatus = GameStatus.På_Lager;
+
+                // Fanger hvis PriceTextBox er tom (eller indeholder kun whitespace) for at undgaa FormatException ved decimal.Parse:
+                if (string.IsNullOrWhiteSpace(PriceTextBox.Text))
+                {
+                    throw new ArgumentException("Du har glemt at indtaste en pris.");
+                }
+
+                decimal price = decimal.Parse(PriceTextBox.Text);
+                string notes = NotesTextBox.Text;
+
+                // Opret et nyt BoardGame-objekt med de indtastede oplysninger
+                // Bestemmer hvilken constructor (BoardGame.cs) vi skal bruge:
+                if (_existingGame != null)
+                {
+                    // Redigering - Bevar det originale ID:
+                    NewBoardGame = new BoardGame(_existingGame.Id, title, genre, minPlayers, maxPlayers, price, gameCondition, gameStatus, notes);
+                }
+                else
+                {
+                    // Nyt spil - Opret nyt ID:
+                    NewBoardGame = new BoardGame(title, genre, minPlayers, maxPlayers, price, gameCondition, gameStatus, notes);
+                }
+
+                this.Close();
             }
-            else
+            // Fanger valideringsfejl fra BoardGame.Validate() og viser en besked til brugeren:
+            // (Selve teksten kommer fra ArgumentException i BoardGame.cs).
+            catch (ArgumentException ex)
             {
-                // Nyt spil - Opret nyt ID:
-                NewBoardGame = new BoardGame(title, genre, minPlayers, maxPlayers, price, gameCondition, gameStatus, notes);
+                MessageBox.Show($"{ex.Message}", "Hov!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+            // Fanger hvis PriceTextBox er tom eller indeholder ugyldigt format for decimal.Parse:
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"Du mangler at udfylde et felt!", "Hov!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            // Fanger hvis ComboBox.SelectedItem er null:
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Du skal vælge en stand for spillet.", "Fejl", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
 
-            this.Close();
-
+            }
         }
         internal BoardGame NewBoardGame { get; private set; }
     }

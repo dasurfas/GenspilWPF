@@ -22,5 +22,26 @@ namespace GenspilWPF.Views
             ConditionComboBox.ItemsSource = items;
             ConditionComboBox.SelectedIndex = 0;
         }
+
+        private void ConditionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // vm (viewmodel) er DataContext castet til BoardGameViewModel for at faa adgang til SearchCondition property:
+            var vm = DataContext as ViewModels.BoardGameViewModel;
+
+            // Hvis comboboksen ikke er tom (f.eks. "Alle" valgt):
+            if (vm != null)
+            {
+                // Hvis en specifik stand er valgt, opdater SearchCondition i ViewModel:
+                if (ConditionComboBox.SelectedItem is GameCondition selectedCondition)
+                {
+                    vm.SearchCondition = selectedCondition;
+                }
+                // Hvis "Alle" er valgt, nulstil SearchCondition for at vise alle spil:
+                else
+                {
+                    vm.SearchCondition = null; // "Alle" valgt, ingen filter.
+                }
+            }
+        }
     }
 }

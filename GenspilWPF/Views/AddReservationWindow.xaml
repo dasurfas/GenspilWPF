@@ -21,17 +21,17 @@
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="8,8,8,8">
             <TextBlock Text="* Obligatoriske felter" VerticalAlignment="Center" FontSize="8" HorizontalAlignment="Left" Margin="0,0,8,0"/>
             <TextBlock Text="Spil titel *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-            <TextBox Width="408" HorizontalAlignment="Left" Height="20" x:Name="TitleTextBox"/>
+            <TextBox Width="408" HorizontalAlignment="Left" Height="20" x:Name="TitleTextBox" Tag="Fx Matador..."/>
         </StackPanel>
         <!-- Kunde info -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="8,8,8,8">
             <StackPanel Orientation="Vertical" Margin="0,0,8,0">
                 <TextBlock Text="Navn *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="CustomerTextBox"/>
+                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="CustomerTextBox" Tag="Fx Lars Nielsen..."/>
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Kontakt *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="ContactInfoTextBox"/>
+                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="ContactInfoTextBox" Tag="Fx telefon eller email..."/>
             </StackPanel>
         </StackPanel>
         <!-- Noter -->

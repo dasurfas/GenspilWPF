@@ -39,7 +39,8 @@
                     x:Name="ConditionComboBox"
                     Width="130"
                     Height="20"
-                    SelectedItem="{Binding SearchCondition}"
+                    SelectionChanged="ConditionComboBox_SelectionChanged"
+                    SelectedIndex="0"
                     />
             </StackPanel>
 

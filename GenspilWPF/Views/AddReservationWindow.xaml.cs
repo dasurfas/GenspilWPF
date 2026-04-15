@@ -1,4 +1,5 @@
 ﻿using GenspilWPF.Models;
+using System;
 using System.Windows;
 
 
@@ -36,26 +37,36 @@ namespace GenspilWPF.Views
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            // Hent vaerdier fra inputfelterne:
-            string gameTitle = TitleTextBox.Text;
-            string customerName = CustomerTextBox.Text;
-            string contactInfo = ContactInfoTextBox.Text;
-            ReservationStatus status = ReservationStatus.Aktiv; // Nye reservationer er altid aktive (default).
-            string notes = NotesTextBox.Text;
+            try
+            {
+                // Hent vaerdier fra inputfelterne:
+                string gameTitle = TitleTextBox.Text;
+                string customerName = CustomerTextBox.Text;
+                string contactInfo = ContactInfoTextBox.Text;
+                ReservationStatus status = ReservationStatus.Aktiv; // Nye reservationer er altid aktive (default).
+                string notes = NotesTextBox.Text;
 
-            // Bestemmer hvilken Constructor (Reservation.cs) vi skal bruge:
-            if (_existingReservation != null)
-            {
-                // Redigering - Bevar det originale ID (Constructor 2):
-                NewReservation = new Reservation(_existingReservation.Id, gameTitle, customerName, contactInfo, _existingReservation.Date, status, notes);
+                // Bestemmer hvilken Constructor (Reservation.cs) vi skal bruge:
+                if (_existingReservation != null)
+                {
+                    // Redigering - Bevar det originale ID (Constructor 2):
+                    NewReservation = new Reservation(_existingReservation.Id, gameTitle, customerName, contactInfo, _existingReservation.Date, status, notes);
+                }
+                else
+                {
+                    // Ny reservation - Opret nyt ID (Constructor 1):
+                    NewReservation = new Reservation(gameTitle, customerName, contactInfo, status, notes);
+                }
+                // Luk modal:
+                this.Close();
             }
-            else
+            catch (ArgumentException ex)
             {
-                // Ny reservation - Opret nyt ID (Constructor 1):
-                NewReservation = new Reservation(gameTitle, customerName, contactInfo, status, notes);
+                // Vis MessageBox popup fejlbesked:
+                MessageBox.Show(ex.Message, "Fejl i input", MessageBoxButton.OK, MessageBoxImage.Error);
+                // Luk ikke vinduet, lad brugeren rette. Return returnerer tidligt fra metoden, saa at vinduet forbliver aabent:
+                return;
             }
-            // Luk modal:
-            this.Close();
         }
 
         // Lukker vinduet uden at gemme. NewReservation forbliver null.

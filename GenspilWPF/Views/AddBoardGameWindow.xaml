@@ -24,17 +24,17 @@
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="8,8,8,8">
             <TextBlock Text="* Obligatoriske felter" VerticalAlignment="Center" FontSize="8" HorizontalAlignment="Left" Margin="0,0,8,0"/>
             <TextBlock Text="Titel *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-            <TextBox Width="408" HorizontalAlignment="Left" Height="20" x:Name="TitleTextBox"/>
+            <TextBox Width="408" HorizontalAlignment="Left" Height="20" x:Name="TitleTextBox" Tag="Fx Catan..."/>
         </StackPanel>
         <!-- Genre og antal spillere -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="8,8,8,8">
             <StackPanel Orientation="Vertical" Margin="0,0,8,0">
                 <TextBlock Text="Genre *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="GenreTextBox"/>
+                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="GenreTextBox" Tag="Fx Strategi..."/>
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Antal spillere *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="PlayersTextBox"/>
+                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="PlayersTextBox" Tag="Fx 2 eller 3-4..."/>
             </StackPanel>
         </StackPanel>
         <!-- Stand og pris -->
@@ -45,7 +45,7 @@
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Pris *" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="PriceTextBox"/>
+                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="PriceTextBox" Tag="Kr..."/>
             </StackPanel>
         </StackPanel>
         <!-- Noter -->
