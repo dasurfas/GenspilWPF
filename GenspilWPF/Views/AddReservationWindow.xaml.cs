@@ -8,7 +8,7 @@ namespace GenspilWPF.Views
     public partial class AddReservationWindow : Window
     {
         // Privat felt til at holde den eksisterende valgte reservation til redigring. Null ved ny reservation.
-        private Reservation _existingReservation;
+        private readonly Reservation _existingReservation;
         // Den oprettede eller redigerede reservation. Laeses af ReservationViewModel efter vinduet lukkes.
         internal Reservation NewReservation { get; private set; }
 
@@ -21,6 +21,9 @@ namespace GenspilWPF.Views
             InitializeComponent();
 
             _existingReservation = existingReservation;
+            // Initialiser StatusComboBox med enum vaerdier og saet default til "Aktiv":
+            StatusComboBox.ItemsSource = Enum.GetValues(typeof(ReservationStatus));
+            StatusComboBox.SelectedItem = ReservationStatus.Aktiv;
 
             // Hvis eksisterende reservation eksisterer, udfyld felterne med existingReservations attributter:
             if (existingReservation != null)
@@ -29,8 +32,14 @@ namespace GenspilWPF.Views
                 CustomerTextBox.Text = existingReservation.CustomerName;
                 ContactInfoTextBox.Text = existingReservation.ContactInfo;
                 NotesTextBox.Text = existingReservation.Notes;
+                StatusComboBox.SelectedItem = existingReservation.Status;
 
-                AddButton.Content = "Gem ændringer"; // Samme som rediger BoardGame. Aendrer teksten i knappen naar man redigerer.
+                // Samme som rediger BoardGame. Aendrer teksten i knappen naar man redigerer.
+                AddButton.Content = "Gem ændringer";
+                // Skifter titlen paa modal fra "Tilfoej reservation" til "Rediger reservation".
+                Title = "Rediger reservation";
+                // Og overskriften i modalen:
+                HeaderTextBlock.Text = "Rediger reservation";
             }
 
         }
@@ -43,7 +52,8 @@ namespace GenspilWPF.Views
                 string gameTitle = TitleTextBox.Text;
                 string customerName = CustomerTextBox.Text;
                 string contactInfo = ContactInfoTextBox.Text;
-                ReservationStatus status = ReservationStatus.Aktiv; // Nye reservationer er altid aktive (default).
+                // Status af ComboBox sat til enum vaerdien valgt i ComboBox (default: Aktiv):
+                ReservationStatus status = (ReservationStatus)StatusComboBox.SelectedItem;
                 string notes = NotesTextBox.Text;
 
                 // Bestemmer hvilken Constructor (Reservation.cs) vi skal bruge:

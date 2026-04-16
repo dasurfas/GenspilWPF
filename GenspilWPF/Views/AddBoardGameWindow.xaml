@@ -5,47 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GenspilWPF.Views"
         mc:Ignorable="d"
-        Title="AddBoardGameWindow" Height="360" Width="440">
+        Title="Tilføj spil" Height="400" Width="440"
+        WindowStartupLocation="CenterScreen">
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="95*"/>
-            <RowDefinition Height="80*"/>
-            <RowDefinition Height="80*"/>
-            <RowDefinition Height="120*"/>
-            <RowDefinition Height="50*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="9.5*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <!-- Overskrift -->
         <Grid Grid.Row="0">
-            <TextBlock Text="Tilføj nyt spil" FontSize="12" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,2,8,0"/>
+            <TextBlock x:Name="HeaderTextBlock" Text="Tilføj nyt spil" FontSize="12" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,2,8,0"/>
         </Grid>
         <!-- Titel -->
-        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="8,8,8,8">
-            <TextBlock Text="* Obligatoriske felter" VerticalAlignment="Center" FontSize="8" HorizontalAlignment="Left" Margin="0,0,8,0"/>
-            <TextBlock Text="Titel *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-            <TextBox Width="408" HorizontalAlignment="Left" Height="20" x:Name="TitleTextBox" Tag="Fx Catan..."/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="8,8,8,8">
+            <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                <TextBlock Text="* Obligatoriske felter" VerticalAlignment="Center" FontSize="8" HorizontalAlignment="Left" Margin="0,0,8,0"/>
+                <TextBlock Text="Titel *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
+                <TextBox Width="200" HorizontalAlignment="Left" Height="25" x:Name="TitleTextBox" Tag="Fx Catan..."/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="" VerticalAlignment="Center" FontSize="8" HorizontalAlignment="Left" Margin="0,0,8,0"/>
+                <TextBlock Text="Status" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
+                <ComboBox Width="200" HorizontalAlignment="Left" Height="25" x:Name="StatusComboBox"/>
+            </StackPanel>
         </StackPanel>
         <!-- Genre og antal spillere -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="8,8,8,8">
             <StackPanel Orientation="Vertical" Margin="0,0,8,0">
                 <TextBlock Text="Genre *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="GenreTextBox" Tag="Fx Strategi..."/>
+                <TextBox Width="200" HorizontalAlignment="Left" Height="25" x:Name="GenreTextBox" Tag="Fx Strategi..."/>
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Antal spillere *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="PlayersTextBox" Tag="Fx 2 eller 3-4..."/>
+                <TextBox Width="200" HorizontalAlignment="Left" Height="25" x:Name="PlayersTextBox" Tag="Fx 2 eller 3-4..."/>
             </StackPanel>
         </StackPanel>
         <!-- Stand og pris -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="8,8,8,8">
             <StackPanel Orientation="Vertical" Margin="0,0,8,0">
                 <TextBlock Text="Stand *" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-                <ComboBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="ConditionComboBox"/>
+                <ComboBox Width="200" HorizontalAlignment="Left" Height="25" x:Name="ConditionComboBox"/>
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Pris *" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,2,8,0"/>
-                <TextBox Width="200" HorizontalAlignment="Left" Height="20" x:Name="PriceTextBox" Tag="Kr..."/>
+                <TextBox Width="200" HorizontalAlignment="Left" Height="25" x:Name="PriceTextBox" Tag="Kr..."/>
             </StackPanel>
         </StackPanel>
         <!-- Noter -->
@@ -55,8 +63,8 @@
         </StackPanel>
         <!-- Buttons -->
         <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,8,8" Width="168">
-            <Button Content="Annuller" Width="80" x:Name="CancelButton" Height="20" Margin="0,0,8,0" Click="CancelButton_Click"/>
-            <Button Content="Tilføj spil" x:Name="AddButton" Width="80" Height="20" Click="AddButton_Click"/>
+            <Button Content="Annuller" Width="80" x:Name="CancelButton" Margin="0,0,8,0" Click="CancelButton_Click"/>
+            <Button Content="Tilføj spil" x:Name="AddButton" Width="80" Margin="0,0,8,0" Click="AddButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -44,7 +44,16 @@ namespace GenspilWPF.Services
         // Returnerer all spil fra RAM:
         public List<BoardGame> GetAllBoardGames()
         {
-            return _games;
+            // Opretter en ny liste for at undga at returnere den originale liste:
+            List<BoardGame> result = new List<BoardGame>();
+            // Tilfoejer kun spil der ikke er solgt til den nye liste:
+            foreach (var game in _games)
+            {
+                if (game.GameStatus != GameStatus.Solgt)
+                    result.Add(game);
+            }
+            // Returnerer den nye liste:
+            return result;
         }
 
         // Finder spillet med det samme Id (== game.Id), og erstatter det eksisterende spil.
@@ -83,6 +92,8 @@ namespace GenspilWPF.Services
         {
             List<BoardGame> results = new List<BoardGame>();
 
+            // Gaar igennem alle spil i hukommelsen og tjekker om de matcher kriterierne i SearchFilter.
+            // Hvis et spil ikke matcher, saetter vi "match" til false.
             foreach (var game in _games)
             {
                 bool match = true;
@@ -99,7 +110,11 @@ namespace GenspilWPF.Services
                     match = false;
                 if (filter.Condition.HasValue && game.GameCondition != filter.Condition)
                     match = false;
+                // Hvis en status er valgt OG spillet ikke matcher: Skjul:
                 if (filter.Status.HasValue && game.GameStatus != filter.Status)
+                    match = false;
+                // Hvis ingen status er valgt OG spillet er solgt: Skjul:
+                if (!filter.Status.HasValue && game.GameStatus == GameStatus.Solgt)
                     match = false;
 
                 if (match) results.Add(game);

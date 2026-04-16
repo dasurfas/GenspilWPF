@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GenspilWPF.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="850">
     <Grid>
         <Grid.RowDefinitions>
             <!-- Row 1 (soegning) -->
@@ -17,19 +17,19 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!-- Soegefelter -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Height="60">
 
             <!-- Titel felt -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Titel"/>
-                <TextBox Width="130" Height="20" Text="{Binding SearchTitle}" Tag="Søg titel...">
+                <TextBox Width="130" Height="25" Text="{Binding SearchTitle}" Tag="Søg titel...">
                 </TextBox>
             </StackPanel>
             
             <!-- Genre -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Genre"/>
-                <TextBox Width="130" Height="20" Text="{Binding SearchGenre}" Tag="Fx Strategi..."/>
+                <TextBox Width="130" Height="25" Text="{Binding SearchGenre}" Tag="Fx Strategi..."/>
             </StackPanel>
             
             <!-- Stand -->
@@ -38,7 +38,7 @@
                 <ComboBox
                     x:Name="ConditionComboBox"
                     Width="130"
-                    Height="20"
+                    Height="25"
                     SelectionChanged="ConditionComboBox_SelectionChanged"
                     SelectedIndex="0"
                     />
@@ -47,17 +47,17 @@
             <!-- Antal Spillere -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Spillere"/>
-                <TextBox Width="130" Height="20" Text="{Binding SearchMinPlayers}" Tag="Fx 2 eller 3-4..."/>
+                <TextBox Width="130" Height="25" Text="{Binding SearchMinPlayers}" Tag="Fx 2 eller 3-4..."/>
             </StackPanel>
 
             <!-- Pris -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Maks pris"/>
-                <TextBox Width="130" Height="20" Text="{Binding SearchMaxPrice}" Tag="Kr..."/>
+                <TextBox Width="130" Height="25" Text="{Binding SearchMaxPrice}" Tag="Kr..."/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="15,24,0,0">
-                <Button Content="Søg" Width="40" Height="20" Command="{Binding SearchCommand}"/>
+                <Button Content="Søg" Width="40" Command="{Binding SearchCommand}"/>
             </StackPanel>
         </StackPanel>
         
@@ -78,19 +78,34 @@
                 ItemsSource="{Binding BoardGames}"
                 SelectedItem="{Binding SelectedBoardGame}"
                 AutoGenerateColumns="False"
+                IsReadOnly="True"
                 >
+                <DataGrid.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditBoardGameCommand}"/>
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Titel" Width="130" Binding="{Binding Title}"/>
                     <DataGridTextColumn Header="Genre" Width="130" Binding="{Binding Genre}"/>
                     <DataGridTextColumn Header="Stand" Width="100" Binding="{Binding GameCondition}"/>
                     <DataGridTextColumn Header="Spillere" Width="80" Binding="{Binding PlayerRange}"/>
                     <DataGridTextColumn Header="Pris" Width="80" Binding="{Binding Price}"/>
-                    <DataGridTextColumn Header="Status" Width="130" Binding="{Binding GameStatus}"/>
+                    <DataGridTextColumn Header="Status" Width="100" Binding="{Binding GameStatus}"/>
+                    <DataGridTemplateColumn Header="Noter" Width="50">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Text="{Binding Notes}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTip="{Binding Notes}"
+                                    ToolTipService.InitialShowDelay="10"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Content="Rediger" Margin="5,0" Command="{Binding DataContext.EditBoardGameCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                    <Button Content="Rediger" Margin="5,0" Command="{Binding DataContext.EditBoardGameCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
                                     <Button Content="Slet" Margin="5,0" Command="{Binding DataContext.DeleteBoardGameCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
                                 </StackPanel>
                             </DataTemplate>

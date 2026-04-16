@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GenspilWPF.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="850">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,29 +14,35 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Button Content="Ny Forespørgsel" Margin="8,8" Width="100" HorizontalAlignment="Left" Command="{Binding AddReservationCommand}"/>
+            <Button Content="Ny Forespørgsel" Margin="8,5,5,5" HorizontalAlignment="Left" Command="{Binding AddReservationCommand}"/>
         </Grid>
-
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <TextBlock Text="Titel" Margin="8,0" Width="120"/>
-            <TextBlock Text="Kundenavn" Margin="8,0" Width="120"/>
-            <TextBlock Text="Kontakt" Margin="8,0" Width="120"/>
-            <TextBlock Text="Dato" Margin="8,0" Width="120"/>
-            <TextBlock Text="Status" Margin="8,0" Width="120"/>
-        </StackPanel>
-
         <Grid Grid.Row="2">
             <DataGrid
                 ItemsSource="{Binding Reservations}"
                 SelectedItem="{Binding SelectedReservation}"
                 AutoGenerateColumns="False"
+                IsReadOnly="True"
                 >
+                <DataGrid.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditReservationCommand}"/>
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Titel" Width="120" Binding="{Binding GameTitle}"/>
                     <DataGridTextColumn Header="Kundenavn" Width="120" Binding="{Binding CustomerName}"/>
                     <DataGridTextColumn Header="Kontakt" Width="120" Binding="{Binding ContactInfo}"/>
                     <DataGridTextColumn Header="Dato" Width="120" Binding="{Binding Date}"/>
-                    <DataGridTextColumn Header="Status" Width="120" Binding="{Binding Status}"/>
+                    <DataGridTextColumn Header="Status" Width="100" Binding="{Binding Status}"/>
+                    <DataGridTemplateColumn Header="Noter" Width="50">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Text="{Binding Notes}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTip="{Binding Notes}"
+                                    ToolTipService.InitialShowDelay="10"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

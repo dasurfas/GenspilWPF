@@ -9,7 +9,7 @@ namespace GenspilWPF.Views
 {
     public partial class AddBoardGameWindow : Window
     {
-        private BoardGame _existingGame;
+        private readonly BoardGame _existingGame;
         // Tilfoejer input til constructoren saa vi kan tilfoeje (null hvis der ikke er et existing game)
         // og redigere (existing game set fra BoardGameViewModel):
         // Constructoren er internal fordi BoardGame klassen er internal. Begge skal have samme access modifiers.
@@ -19,18 +19,26 @@ namespace GenspilWPF.Views
 
             _existingGame = existingGame;
             ConditionComboBox.ItemsSource = Enum.GetValues(typeof(GameCondition));
-
-            // Hvis et existing game eksisterer:
+            StatusComboBox.ItemsSource = Enum.GetValues(typeof(GameStatus));
+            // Saet ComboBox default value til "Paa lager":
+            StatusComboBox.SelectedItem = GameStatus.På_Lager;
+            // Hvis et existing game eksisterer saa hent info:
             if (existingGame != null)
             {
                 TitleTextBox.Text = existingGame.Title;
                 GenreTextBox.Text = existingGame.Genre;
                 PlayersTextBox.Text = existingGame.PlayerRange;
-                ConditionComboBox.Text = existingGame.GameCondition.ToString();
                 PriceTextBox.Text = existingGame.Price.ToString();
                 NotesTextBox.Text = existingGame.Notes;
+                ConditionComboBox.SelectedItem = existingGame.GameCondition;
+                StatusComboBox.SelectedItem = existingGame.GameStatus;
 
-                AddButton.Content = "Gem ændringer"; // Aendrer teksten fra "tilfoej spil" naar man redigerer.
+                // Skifter titlen paa modal fra "Tilfoej spil" til "Rediger spil".
+                Title = "Rediger spil";
+                // Og overskriften i modalens header fra "Tilfoej spil" til "Rediger spil":
+                HeaderTextBlock.Text = "Rediger spil";
+                // Og knapteksten fra "Tilfoej spil" til "Gem aendringer":
+                AddButton.Content = "Gem ændringer";
             }
         }
 
@@ -49,7 +57,7 @@ namespace GenspilWPF.Views
                 int minPlayers = int.Parse(parts[0]);
                 int maxPlayers = parts.Length > 1 ? int.Parse(parts[1]) : minPlayers;
                 GameCondition gameCondition = (GameCondition)ConditionComboBox.SelectedItem;
-                GameStatus gameStatus = GameStatus.På_Lager;
+                GameStatus gameStatus = (GameStatus)StatusComboBox.SelectedItem;
 
                 // Fanger hvis PriceTextBox er tom (eller indeholder kun whitespace) for at undgaa FormatException ved decimal.Parse:
                 if (string.IsNullOrWhiteSpace(PriceTextBox.Text))
@@ -83,7 +91,7 @@ namespace GenspilWPF.Views
                 return;
             }
             // Fanger hvis PriceTextBox er tom eller indeholder ugyldigt format for decimal.Parse:
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 MessageBox.Show($"Du mangler at udfylde et felt!", "Hov!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
