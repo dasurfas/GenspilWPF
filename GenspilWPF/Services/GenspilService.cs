@@ -1,6 +1,7 @@
 ﻿using GenspilWPF.Models;
 using GenspilWPF.Repositories;
 using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace GenspilWPF.Services
 {
@@ -86,7 +87,10 @@ namespace GenspilWPF.Services
         }
 
         // Soeger efter spil baseret paa SearchFilter. Kun matchende spil der udfylder ALLE kriterier returneres.
-        // TODO: Ikke den bedste metode og mangler en "reset after search funktion". Think think...
+
+        // NOTE: Jeg mangler en maade at nulstille paa. F.eks. hvis jeg vaelger 3 i spillere, saa kan jeg ikke resette!! Det er et halvfaerdigt system,
+        // men det tager mig rigtig lang tid at lave en lille ting, da jeg er nybegynder. Saa havde ikke tid til at finde ud af det. Sorry!
+
         public List<BoardGame> Search(SearchFilter filter)
         {
             List<BoardGame> results = new List<BoardGame>();
