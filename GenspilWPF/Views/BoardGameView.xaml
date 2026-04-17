@@ -104,13 +104,13 @@
                                                     <Setter Property="Background" Value="#b70000"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding GameStatus}" Value="Reserveret">
-                                                    <Setter Property="Background" Value="#bea500"/>
+                                                    <Setter Property="Background" Value="#0C447C"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding GameStatus}" Value="TilReparation">
-                                                    <Setter Property="Background" Value="#0067c7"/>
+                                                    <Setter Property="Background" Value="#6f0070"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding GameStatus}" Value="PåVej">
-                                                    <Setter Property="Background" Value="#633806"/>
+                                                    <Setter Property="Background" Value="#bea500"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding GameStatus}" Value="Solgt">
                                                     <Setter Property="Background" Value="#444444"/>
@@ -122,7 +122,6 @@
                                 </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Noter" Width="50">
                         <DataGridTemplateColumn.CellTemplate>

@@ -1,9 +1,7 @@
 ﻿using GenspilWPF.Models;
 using System;
-using System.ComponentModel.Design;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace GenspilWPF.Views
 {
@@ -17,11 +15,33 @@ namespace GenspilWPF.Views
         {
             InitializeComponent();
 
+            // Gemmer det eksisterende spil i en private field saa vi kan bruge det senere i AddButton_Click for at bevare ID ved redigering:
             _existingGame = existingGame;
+            // Sætter ComboBox ItemsSource til enum vaerdier for GameCondition:
             ConditionComboBox.ItemsSource = Enum.GetValues(typeof(GameCondition));
-            StatusComboBox.ItemsSource = Enum.GetValues(typeof(GameStatus));
-            // Saet ComboBox default value til "Paa lager":
-            StatusComboBox.SelectedItem = GameStatus.På_Lager;
+            // Sætter default vaerdi for ConditionComboBox til "God" (hvis det er et nyt spil der skal tilfoejes):
+            ConditionComboBox.SelectedItem = GameCondition.God;
+
+            // Midlertidig loesning for at aendre navn paa ComboBox. TODO: Flyt ind i hjaelper class (MVVM):
+            // Dictionary for at mappe enum vaerdier til mere brugervenlige tekster i ComboBox:
+            var statusItems = new Dictionary<GameStatus, string>
+            {
+                { GameStatus.På_Lager, "På lager" },
+                { GameStatus.Ikke_På_Lager, "Ikke på lager" },
+                { GameStatus.Reserveret, "Reserveret" },
+                { GameStatus.TilReparation, "Til reparation" },
+                { GameStatus.PåVej, "På vej" },
+                { GameStatus.Solgt, "Solgt" }
+            };
+
+            // Sæt ComboBox ItemsSource til dictionary vaerdier og brug Key som SelectedValue:
+            // Key er enum vaerdien (GameStatus.På_Lager) og Value er den brugervenlige tekst ("På lager"):
+            StatusComboBox.ItemsSource = statusItems;
+            StatusComboBox.DisplayMemberPath = "Value";
+            StatusComboBox.SelectedValuePath = "Key";
+            StatusComboBox.SelectedValue = GameStatus.På_Lager;
+
+
             // Hvis et existing game eksisterer saa hent info:
             if (existingGame != null)
             {
@@ -31,7 +51,7 @@ namespace GenspilWPF.Views
                 PriceTextBox.Text = existingGame.Price.ToString();
                 NotesTextBox.Text = existingGame.Notes;
                 ConditionComboBox.SelectedItem = existingGame.GameCondition;
-                StatusComboBox.SelectedItem = existingGame.GameStatus;
+                StatusComboBox.SelectedValue = existingGame.GameStatus;
 
                 // Skifter titlen paa modal fra "Tilfoej spil" til "Rediger spil".
                 Title = "Rediger spil";
@@ -57,7 +77,7 @@ namespace GenspilWPF.Views
                 int minPlayers = int.Parse(parts[0]);
                 int maxPlayers = parts.Length > 1 ? int.Parse(parts[1]) : minPlayers;
                 GameCondition gameCondition = (GameCondition)ConditionComboBox.SelectedItem;
-                GameStatus gameStatus = (GameStatus)StatusComboBox.SelectedItem;
+                GameStatus gameStatus = (GameStatus)StatusComboBox.SelectedValue;
 
                 // Fanger hvis PriceTextBox er tom (eller indeholder kun whitespace) for at undgaa FormatException ved decimal.Parse:
                 if (string.IsNullOrWhiteSpace(PriceTextBox.Text))
