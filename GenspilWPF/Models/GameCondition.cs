@@ -7,6 +7,6 @@
         Okay,
         Slidt,
         Beskadiget,
-        Oedelagt
+        Ødelagt
     }
 }

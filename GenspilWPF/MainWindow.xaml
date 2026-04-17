@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -19,12 +19,37 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-
-            <TextBlock Text="Genspil" Margin="8" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
-
+            <Image Source="/Images/Genspil-Logo_v2.png" Height="48" Margin="8,2,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <TextBlock Text="Lagerstyring" Margin="80,10,170,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Grid.ColumnSpan="2"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="LagerButton" Content="Lager" Margin="8" Command="{Binding ShowBoardGamesCommand}"/>
-                <Button x:Name="ReservationButton" Content="Forespørgsel" Margin="8" Command="{Binding ShowReservationCommand}"/>
+                <Button x:Name="LagerButton" Content="Lager" Margin="8" Command="{Binding ShowBoardGamesCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLagerActive}" Value="False">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="#0C447C"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="BorderBrush" Value="#0C447C"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="ReservationButton" Content="Forespørgsel" Margin="8" Command="{Binding ShowReservationCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsReservationActive}" Value="False">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="#0C447C"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="BorderBrush" Value="#0C447C"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
         </Grid>
         <!-- Indhold: -->

@@ -42,6 +42,21 @@ namespace GenspilWPF.Models
             Validate();
         }
 
+        public string GameStatusText
+        {
+            // Denne property konverterer GameStatus enum vaerdien til en mere brugervenlig tekst som kan vises i UI'et:
+            get
+            {
+                if (GameStatus == GameStatus.På_Lager) return "På lager";
+                else if (GameStatus == GameStatus.Ikke_På_Lager) return "Ikke på lager";
+                else if (GameStatus == GameStatus.Reserveret) return "Reserveret";
+                else if (GameStatus == GameStatus.TilReparation) return "Til reparation";
+                else if (GameStatus == GameStatus.PåVej) return "På vej";
+                else if (GameStatus == GameStatus.Solgt) return "Solgt";
+                else return GameStatus.ToString();
+            }
+        }
+
         // Constructor 2 - Overload (bruges ved indlaesning fra fil, hvor ID allerede er kendt)
         public BoardGame(int id, string title, string genre, int minPlayerCount, int maxPlayerCount, decimal price, GameCondition gameCondition, GameStatus gameStatus, string notes)
         {
@@ -111,7 +126,8 @@ namespace GenspilWPF.Models
         {
             string[] parts = data.Split(';');
 
-            return new BoardGame(
+            return new BoardGame
+                (
                 int.Parse(parts[0]), // Id
                 parts[1], // Title
                 parts[2], // Genre

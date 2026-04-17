@@ -22,14 +22,14 @@
             <!-- Titel felt -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Titel"/>
-                <TextBox Width="130" Height="25" Text="{Binding SearchTitle}" Tag="Søg titel...">
+                <TextBox Width="130" Height="26" Text="{Binding SearchTitle}" Tag="Søg titel...">
                 </TextBox>
             </StackPanel>
             
             <!-- Genre -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Genre"/>
-                <TextBox Width="130" Height="25" Text="{Binding SearchGenre}" Tag="Fx Strategi..."/>
+                <TextBox Width="130" Height="26" Text="{Binding SearchGenre}" Tag="Fx Strategi..."/>
             </StackPanel>
             
             <!-- Stand -->
@@ -47,13 +47,13 @@
             <!-- Antal Spillere -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Spillere"/>
-                <TextBox Width="130" Height="25" Text="{Binding SearchMinPlayers}" Tag="Fx 2 eller 3-4..."/>
+                <TextBox Width="130" Height="26" Text="{Binding SearchMinPlayers}" Tag="Fx 2 eller 3-4..."/>
             </StackPanel>
 
             <!-- Pris -->
             <StackPanel Orientation="Vertical" Margin="8">
                 <TextBlock Text="Maks pris"/>
-                <TextBox Width="130" Height="25" Text="{Binding SearchMaxPrice}" Tag="Kr..."/>
+                <TextBox Width="130" Height="26" Text="{Binding SearchMaxPrice}" Tag="Kr..."/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="15,24,0,0">
@@ -89,7 +89,41 @@
                     <DataGridTextColumn Header="Stand" Width="100" Binding="{Binding GameCondition}"/>
                     <DataGridTextColumn Header="Spillere" Width="80" Binding="{Binding PlayerRange}"/>
                     <DataGridTextColumn Header="Pris" Width="80" Binding="{Binding Price}"/>
-                    <DataGridTextColumn Header="Status" Width="100" Binding="{Binding GameStatus}"/>
+                    <DataGridTemplateColumn Header="Status" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="4" Padding="6,2" Margin="0,3" Opacity="0.75">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#085041"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding GameStatus}" Value="På_Lager">
+                                                    <Setter Property="Background" Value="#085041"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding GameStatus}" Value="Ikke_På_Lager">
+                                                    <Setter Property="Background" Value="#b70000"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding GameStatus}" Value="Reserveret">
+                                                    <Setter Property="Background" Value="#bea500"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding GameStatus}" Value="TilReparation">
+                                                    <Setter Property="Background" Value="#0067c7"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding GameStatus}" Value="PåVej">
+                                                    <Setter Property="Background" Value="#633806"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding GameStatus}" Value="Solgt">
+                                                    <Setter Property="Background" Value="#444444"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding GameStatusText}" Foreground="White" FontSize="11" HorizontalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Noter" Width="50">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

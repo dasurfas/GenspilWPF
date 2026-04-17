@@ -61,7 +61,7 @@
             </Setter>
         </Style>
 
-        <!-- Button -->
+        <!-- Button (default blaa) -->
         <Style TargetType="Button">
             <Setter Property="Background" Value="{StaticResource PrimaryBlue}"/>
             <Setter Property="Foreground" Value="{StaticResource LightBlueText}"/>
