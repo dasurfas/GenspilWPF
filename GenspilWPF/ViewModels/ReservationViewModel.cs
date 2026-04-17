@@ -3,12 +3,12 @@ using GenspilWPF.Services;
 using GenspilWPF.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Net.Http.Headers;
 using System.Windows;
 using System.Windows.Input;
 
 namespace GenspilWPF.ViewModels
 {
+    // ReservationViewModel har samme struktur og funktionalitet som BoardGameViewModel:
     internal class ReservationViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<Reservation> _reservations;
@@ -26,6 +26,7 @@ namespace GenspilWPF.ViewModels
 
         private void AddReservation()
         {
+            // Aabn et nyt vindue for at tilfoeje en reservation. Dette vindue vil returnere den nye reservation, hvis brugeren vaelger at tilfoeje den:
             var window = new AddReservationWindow();
             window.ShowDialog();
             if (window.NewReservation != null)
@@ -70,6 +71,7 @@ namespace GenspilWPF.ViewModels
             }
         }
 
+        // Reservations er listen DataGrid (xaml) binder (binding) til:
         public ObservableCollection<Reservation> Reservations
             {
                 get { return _reservations; }
@@ -79,6 +81,8 @@ namespace GenspilWPF.ViewModels
                     OnPropertyChanged(nameof(Reservations));
                 }
         }
+        // SelectedReservation er den reservation som brugeren har valgt i DataGrid'et i ReservationView.xaml.
+        // Den bruges til at vide hvilken reservation der skal slettes eller redigeres, og til at sende data til AddReservationWindow.xaml ved redigering:
         public Reservation SelectedReservation
         {
             get { return _selectedReservation; }
@@ -88,12 +92,15 @@ namespace GenspilWPF.ViewModels
                 OnPropertyChanged(nameof(SelectedReservation));
             }
         }
+        // Kommandoer til at tilfoeje, slette og redigere reservationer. Disse kommandoer bindes til knapper i ReservationView.xaml:
         public ICommand AddReservationCommand { get; }
         public ICommand DeleteReservationCommand { get; }
         public ICommand EditReservationCommand { get; }
 
+        // INotifyPropertyChanged interface implementering for at notify UI'et om aendringer i properties:
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // OnPropertyChanged. Denne metode kaldes for at notify UI'et om aendringer i properties, saa det kan opdatere det viste data i ReservationView.xaml:
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

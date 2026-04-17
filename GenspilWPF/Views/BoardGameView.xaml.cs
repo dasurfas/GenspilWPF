@@ -7,9 +7,7 @@ using System.Linq;
 
 namespace GenspilWPF.Views
 {
-    /// <summary>
-    /// Interaction logic for BoardGameView.xaml
-    /// </summary>
+    // Interaction logic for BoardGameView.xaml:
     public partial class BoardGameView : UserControl
     {
         public BoardGameView()

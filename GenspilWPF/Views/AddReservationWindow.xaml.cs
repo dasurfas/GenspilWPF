@@ -2,7 +2,6 @@
 using System;
 using System.Windows;
 
-
 namespace GenspilWPF.Views
 {
     public partial class AddReservationWindow : Window
@@ -44,6 +43,7 @@ namespace GenspilWPF.Views
 
         }
 
+        // Henter vaerdier fra inputfelterne og opretter en ny reservation. Hvis det er en redigering, bevares det originale ID:
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             try

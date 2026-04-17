@@ -4,6 +4,8 @@ using System.IO;
 
 namespace GenspilWPF.Repositories
 {
+    // Samme som BoardGameRepository, men for Reservation objekter:
+
     internal class ReservationRepository : IRepository<Reservation>
     {
         private string _filePath;

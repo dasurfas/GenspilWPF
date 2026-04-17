@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GenspilWPF.Models
+﻿namespace GenspilWPF.Models
 {
+    // SearchFilter klassen bruges til at holde information om de forskellige filterkriterier,
+    // som brugeren kan indtaste i soegefeltet for at filtrere braetspillene i BoardGameViewModel:
     internal class SearchFilter
     {
         public string Title { get; set; }

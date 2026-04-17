@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace GenspilWPF.Models
 {
+    // Reservation klassen repraesenterer en reservation af et brætspil.
+    // Den indeholder information om spillet, kunden, kontaktinfo, dato, status og eventuelle noter.
     internal class Reservation
     {
         public string GameTitle { get; private set; }
@@ -14,6 +15,7 @@ namespace GenspilWPF.Models
         public int Id { get; private set; }
 
         // Constructor 1:
+        // Denne constructor bruges til at oprette en ny reservation, hvor ID genereres automatisk og dato saettes til dagens dato:
         public Reservation(string gameTitle, string customerName, string contactInfo, ReservationStatus status, string notes)
         {
             GameTitle = gameTitle;
@@ -29,6 +31,7 @@ namespace GenspilWPF.Models
         }
 
         // Constructor 2:
+        // Denne constructor bruges ved indlaesning fra fil, hvor ID og dato allerede er kendt:
         public Reservation(int id, string gameTitle, string customerName, string contactInfo, DateTime date, ReservationStatus status, string notes)
         {
             GameTitle = gameTitle;
@@ -42,6 +45,7 @@ namespace GenspilWPF.Models
             Validate();
         }
 
+        // Validate metoden sikrer at alle noedvendige felter er udfyldt korrekt, og kaster en ArgumentException hvis der er fejl:
         private void Validate()
         {
             if (string.IsNullOrWhiteSpace(GameTitle))
@@ -52,6 +56,7 @@ namespace GenspilWPF.Models
                 throw new ArgumentException("Kontaktinformation maa ikke vaere tom!");
         }
 
+        // UpdateStatus metoden giver mulighed for at opdatere status for reservationen:
         public void UpdateStatus(ReservationStatus newStatus)
         {
             Status = newStatus;
@@ -61,6 +66,8 @@ namespace GenspilWPF.Models
             return $"{Id};{GameTitle};{CustomerName};{ContactInfo};{Date};{Status};{Notes}";
         }
 
+        // FromString metoden giver mulighed for at oprette en Reservation-objekt ud fra en string,
+        // som er formatet på samme måde som ToString() output:
         public static Reservation FromString(string data)
         {
             string [] parts = data.Split(';');
